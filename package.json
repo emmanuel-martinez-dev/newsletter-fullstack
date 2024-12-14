@@ -9,6 +9,8 @@
     "web": "npm run local --prefix web"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/http-status": "^0.2.30",
     "concurrently": "7.6.0"
   },
   "author": "",
