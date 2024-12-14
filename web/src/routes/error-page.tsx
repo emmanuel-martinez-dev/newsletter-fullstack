@@ -9,7 +9,7 @@ export const ErrorPage = () => {
   }
 
   return (
-    <div>
+    <div className="text-center text-red-700">
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>
