@@ -1,15 +1,47 @@
 import { ChangeEventHandler, useState } from "react";
+import { API_URL } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 
+interface SignupSuccessPayload {
+  message: string;
+}
 export const SignupPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const onEmailChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setEmail(target.value);
   };
 
-  const onSignupClick = () => {
+  const onSignupClick = async () => {
     if (!email) return;
     console.log("Signup Clicked!");
+    const body = JSON.stringify({
+      email,
+    });
+
+    try {
+      const response = await fetch(`${API_URL}/newsletter/signup`, {
+        method: "POST",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const payload = (await response.json()) as SignupSuccessPayload;
+
+      const isOkRequest = response.status === 200 || response.status === 201;
+      if (!isOkRequest) {
+        if (typeof payload === "string") {
+          return setErrorMessage(payload);
+        }
+        return setErrorMessage("Invalid email, please try again");
+      }
+    } catch (error) {
+      console.error(error);
+      setEmail("");
+    }
   };
   return (
     <div>
